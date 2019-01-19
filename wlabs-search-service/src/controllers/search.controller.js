@@ -12,7 +12,7 @@ export class SearchController {
 
         // refresh the cache every 5 minutes
         setInterval(this.searchService.load,
-            1000*60*5,
+            config.SERVER.cacheTimeout,
             this.apiUrl);
 
     }
@@ -20,11 +20,12 @@ export class SearchController {
     // GET /search/{query}
     get (request) {
         // find in our product cache all product id's matching search criteria
-        // req.params.query?
-        if (!request.params.query) return Boom.notFound();
 
-        // find all matches
+        if (!request.params.query) return Boom.badRequest();
+
+        // find all matches on our query text
         const searchResults = this.searchService.find(request.params.query);
+
         return searchResults;
     }
 }

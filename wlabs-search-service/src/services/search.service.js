@@ -10,21 +10,26 @@ export default class SearchService {
         this.CACHE = {};
     }
     async load(apiUrl) {
-        this.CACHE = {};
         const response = await request.get({ uri: apiUrl, json: true});
 
-        if (response.items) {
-            logger.info(`loading ${response.items.length} items from walmart api`);
-            this.CACHE = response.items;
-
-            // rebuild the fuzzy index
-            this.searcher = new FuzzySearch(this.CACHE, { keys: ['shortDescription', 'name', 'brandName']});
-        } else {
+        if (!response.items) {
             logger.error('could not load any items from walmart api');
+            return;
         }
+
+        // clear the cache
+        this.CACHE = {};
+
+        logger.info(`loading ${response.items.length} items from walmart api`);
+
+        this.CACHE = response.items;
+
+        // rebuild the fuzzy index
+        this.searcher = new FuzzySearch(this.CACHE, { keys: ['shortDescription', 'name', 'brandName']});
 
     }
     find(query){
+        // need to have something to search on
         if (!query) return '';
 
         const result = this.searcher.search(query);

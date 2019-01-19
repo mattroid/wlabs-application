@@ -1,7 +1,8 @@
 module.exports = {
     SERVER: {
         name: 'WalmartLabsChallenge',
-        port: 3001
+        port: 3001,
+        cacheTimeout: 1000*60*5
     },
     WALMART: {
         apiKey: 'kjybrqfdgp3u4yv2qzcnjndj',

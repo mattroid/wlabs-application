@@ -19,7 +19,7 @@ Returns JSON:
 ```javascript
 {
   items: [
-    { id: 35613901 }
+    { id: 35613901, ...}
   ]
 }
 ```
@@ -28,9 +28,12 @@ Querying requires searching on product meta data. This means that the API needs
 to have access to the meta data objects being indexed. Pulling down meta data
 from the list of products and indexing it.
 
-This list is guaranteed to be update to date because of our cache sync mechanism
+This list is guaranteed to be update to date because of our cache sync mechanism.
+Which is simply polling the api every 5 minutes for new data.
 
-The API is protected from rate limiting because of the request queuing service
+The API is protected from rate limiting because of the request queuing service. Taking 
+this into account we're making just one request with all the id's and caching the values 
+for 5 minutes before requesting fresh data again. 
 
 ##### The UI
 

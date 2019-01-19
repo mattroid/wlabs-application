@@ -22,7 +22,7 @@ export default class Server {
         logger.info('Server running at:', this.server.info.uri);
     }
 
-    registerRoute(controller) {
+    registerController(controller) {
         this.server.route(controller);
     }
 

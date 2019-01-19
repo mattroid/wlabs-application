@@ -9,8 +9,9 @@ const server = new Server(config);
 const controllers = [
     SearchController,
 ];
+
 for (const controller of controllers) {
-    server.registerRoute(controller);
+    server.registerController(controller);
 }
 
 server.start();

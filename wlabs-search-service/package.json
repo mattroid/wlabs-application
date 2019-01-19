@@ -6,15 +6,26 @@
   "author": "",
   "license": "ISC",
   "pm2config": "pm2.json",
+  "scripts": {
+    "start": "node src/bootstrap.js",
+    "start-watch": "npm-run-all -p watch start-dev",
+    "start-dev": "pm2-dev src/bootstrap.js | bunyan",
+    "build": "rm -rf dist/; eslint src; babel src --out-dir dist",
+    "watch": "chokidar ./src/**/*.js -c \"npm run build\" --initial --silent",
+    "test": "mocha --file test/test-bootstrap.js --exit dist/**/*.spec.js"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-arrow-functions": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
+    "chai": "^4.2.0",
     "chokidar-cli": "^1.2.1",
     "eslint": "^5.12.1",
+    "mocha": "^5.2.0",
     "npm-run-all": "^4.1.5",
-    "pm2": "^3.2.9"
+    "pm2": "^3.2.9",
+    "request-promise": "^4.2.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -22,25 +33,10 @@
     "bluebird": "^3.5.3",
     "boom": "^7.3.0",
     "bunyan": "^1.8.12",
-    "hapi": "^18.0.0"
-  },
-  "scripts": {
-    "start": "node src/bootstrap.js",
-    "start-watch": "npm-run-all -p watch start-dev",
-    "start-dev": "pm2-dev src/bootstrap.js | bunyan",
-    "build": "eslint src; babel src --out-dir dist",
-    "watch": "chokidar ./src/**/*.js -c \"npm run build\" --initial --silent"
-  },
-  "nyc": {
-    "include": [
-      "dist/app/**/*.js"
-    ],
-    "exclude": [
-      "dist/app/**/*.spec.js"
-    ],
-    "reporter": [
-      "html",
-      "text-summary"
-    ]
+    "fuse.js": "^3.3.0",
+    "hapi": "^18.0.0",
+    "lodash": "^4.17.11",
+    "request": "^2.88.0",
+    "sinon": "^7.2.2"
   }
 }

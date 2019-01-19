@@ -1,10 +1,20 @@
 import Boom from 'boom';
-import SearchService from 'search.service';
+import SearchService from 'services/search.service';
+import config from 'config';
 
-
-class SearchController {
+export class SearchController {
     constructor(searchService){
         this.searchService = searchService;
+        this.apiUrl = `${config.WALMART.apiUrl}/items?ids=${config.WALMART.items}&format=json&apiKey=${config.WALMART.apiKey}`;
+
+        // initialize the cache on startup
+        this.searchService.load(this.apiUrl);
+
+        // refresh the cache every 5 minutes
+        setInterval(this.searchService.load,
+            1000*60*5,
+            this.apiUrl);
+
     }
 
     // GET /search/{query}
@@ -25,5 +35,5 @@ const searchController = new SearchController(searchService);
 export default [{
     method: 'GET',
     path: '/search/{query}',
-    handler: searchController.get
+    handler: searchController.get.bind(searchController)
 }];

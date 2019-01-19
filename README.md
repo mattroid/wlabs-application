@@ -35,7 +35,7 @@ The API is protected from rate limiting because of the request queuing service
 ##### The UI
 
 The API is published with a UI written in a simple react Progressive Web Application (PWA).
-This project utilizes the PWA boilerplate react app at the [react-pwa](https://github.com/Atyantik/react-pwa) project
+Used create-react-app --typescript to create a simple PWA with typescript. 
 
 
 ##### SaI Docker compose

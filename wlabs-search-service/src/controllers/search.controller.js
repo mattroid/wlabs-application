@@ -5,10 +5,9 @@ import config from 'config';
 export class SearchController {
     constructor(searchService){
         this.searchService = searchService;
-        this.apiUrl = `${config.WALMART.apiUrl}/items?ids=${config.WALMART.items}&format=json&apiKey=${config.WALMART.apiKey}`;
 
         // initialize the cache on startup
-        this.searchService.load(this.apiUrl);
+        this.searchService.load(config.WALMART.items);
 
         // refresh the cache every 5 minutes
         setInterval(this.searchService.load,

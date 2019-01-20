@@ -7,9 +7,9 @@
   "license": "ISC",
   "pm2config": "pm2.json",
   "scripts": {
-    "start": "node src/bootstrap.js",
+    "start": "node src/bootstrap.js | bunyan",
     "start-watch": "npm-run-all -p watch start-dev",
-    "start-dev": "pm2-dev src/bootstrap.js | bunyan",
+    "start-dev": "pm2-dev src/bootstrap.js --raw | bunyan",
     "build": "rm -rf dist/; eslint src; babel src --out-dir dist",
     "watch": "chokidar ./src/**/*.js -c \"npm run build\" --initial --silent",
     "test": "mocha --file test/test-bootstrap.js --exit dist/**/*.spec.js"

@@ -1,36 +1,40 @@
 import request from 'request-promise';
 import FuzzySearch from 'fuse.js';
+import config from 'config';
+import _ from 'lodash';
+
 /*
  * Uses request to talk to the walmart api
- * it caches results in memory
- * 
+ * it caches results in memory and searches
+ * on the in-memory data
  */
 export default class SearchService {
-    constructor(){
-        this.CACHE = {};
-    }
-    async load(apiUrl) {
-        const response = await request.get({ uri: apiUrl, json: true});
+    async load(itemsToSearch) {
+        if (!itemsToSearch) return;
 
-        if (!response.items) {
-            logger.error('could not load any items from walmart api');
-            return;
+        // the api can only search 20 items at a time
+        const itemChunks = _.chunk(itemsToSearch, 19);
+
+        let foundItems = [];
+
+        // this runs serially but another option is to use bluebirds
+        // Promise.each
+        for (let i=0; i<itemChunks.length;i++) {
+            const chunk = itemChunks[i];
+            const apiUrl = `${config.WALMART.apiUrl}/items?ids=${_.join(chunk)}&format=json&apiKey=${config.WALMART.apiKey}`;
+            let response = await request.get({ uri: apiUrl, json: true});
+
+            foundItems.push(...response.items);
         }
-
-        // clear the cache
-        this.CACHE = {};
-
-        logger.info(`loading ${response.items.length} items from walmart api`);
-
-        this.CACHE = response.items;
+        logger.info(`loading ${foundItems.length} items from walmart api`);
 
         // rebuild the fuzzy index
-        this.searcher = new FuzzySearch(this.CACHE, { keys: ['shortDescription', 'name', 'brandName']});
-
+        this.searcher = new FuzzySearch(foundItems, { keys: ['shortDescription', 'name', 'brandName']});
     }
+
     find(query){
         // need to have something to search on
-        if (!query) return '';
+        if (!query) return [];
 
         const result = this.searcher.search(query);
 

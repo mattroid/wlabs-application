@@ -23,16 +23,16 @@
 }
 .results {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
+  justify-content: left;
   width: 30%;
 }
 .results li {
+  width: 300px;
   list-style: none;
   display: inline-block;
-  height: 120px;
-  text-align: center;
+  text-align: left;
 }
 
 @keyframes App-logo-spin {

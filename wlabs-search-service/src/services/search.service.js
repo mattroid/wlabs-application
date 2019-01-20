@@ -29,7 +29,13 @@ export default class SearchService {
         logger.info(`loading ${foundItems.length} items from walmart api`);
 
         // rebuild the fuzzy index
-        this.searcher = new FuzzySearch(foundItems, { keys: ['shortDescription', 'name', 'brandName']});
+        const options = {
+            keys: ['shortDescription', 'name', 'brandName'],
+            threshold: 0.4,
+            distance: 100,
+            minMatchCharLength: 2
+        };
+        this.searcher = new FuzzySearch(foundItems, options);
     }
 
     find(query){

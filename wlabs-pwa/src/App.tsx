@@ -40,8 +40,9 @@ class App extends Component<{}, { products: any[]}> {
           </form>
           <ul className="results">
               {this.state.products.map( (d: any) => <li key={d.itemId}>
-                  <img src={d.imageEntities[0].thumbnailImage} />
                   {d.name}
+                  <br />
+                  <img src={d.mediumImage} width="300" />
               </li>)}
           </ul>
 

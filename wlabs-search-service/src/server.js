@@ -5,7 +5,8 @@ export default class Server {
         // Create a server with a host and port
         this.server = Hapi.server({
             host:'localhost',
-            port:config.SERVER.port
+            port:config.SERVER.port,
+            routes: { cors: true}
         });
     }
 

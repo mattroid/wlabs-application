@@ -1,7 +1,7 @@
 module.exports = {
     SERVER: {
         name: 'WalmartLabsChallenge',
-        port: 3001,
+        port: 3002,
         cacheTimeout: 1000*60*5
     },
     WALMART: {

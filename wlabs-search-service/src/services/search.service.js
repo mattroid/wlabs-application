@@ -4,11 +4,25 @@ import config from 'config';
 import _ from 'lodash';
 
 /*
- * Uses request to talk to the walmart api
- * it caches results in memory and searches
- * on the in-memory data
+ * Talks to the walmart api to get product information to search on. caches
+ * results in memory and searches on the in-memory data.
+ *
+ * Fuse.js allows the use of fuzzy searching and can support. This library
+ * options are extensive and allow for tuning the fuzziness of the search. See
+ * for more information: http://fusejs.io/
  */
 export default class SearchService {
+    /*
+     * Loads data in batches. The walmart api allows up to 20 product Id's to be
+     * passed into each api request allowing the batching of product results and
+     * reducing the number of times the api needs to be called. Additionally
+     * there's a limit on the number of api calls per second so to prevent it
+     * from erring out the api calls are done in serial order instead of
+     * parallel.
+     *
+     * @method load
+     * @param {Number[]}itesmToSearch - array of product id's
+     */
     async load(itemsToSearch) {
         if (!itemsToSearch) return;
 
@@ -38,6 +52,11 @@ export default class SearchService {
         this.searcher = new FuzzySearch(foundItems, options);
     }
 
+    /*
+     * @method find
+     * @param {string} query - the string to search on
+     * @returns {Object[]} - list of product objects 
+     */
     find(query){
         // need to have something to search on
         if (!query) return [];

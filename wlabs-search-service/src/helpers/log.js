@@ -1,6 +1,9 @@
 import config from 'config';
 const bunyan = require('bunyan');
 
+/*
+ * Wrapper for the bunyan logger class. 
+ */
 export class Logger {
     constructor() {
         this.logger = bunyan.createLogger({

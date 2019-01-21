@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import request from 'request-promise';
-import logo from './logo.svg';
+import logo from './logo.jpg';
 import './App.css';
 
 class App extends Component<{}, { errors: string[], products: any[]}> {
@@ -32,7 +32,7 @@ class App extends Component<{}, { errors: string[], products: any[]}> {
       <div className="App">
         <header className="App-header">
           <p>
-            Search for Walmart products
+            <img id="walmart-logo" src={logo} />Search for Walmart products
           </p>
           <form className="form" id="searchForm">
               <input type="text" className="input" id="searchText" placeholder="Backpacks" />

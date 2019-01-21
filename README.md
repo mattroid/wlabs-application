@@ -54,7 +54,5 @@ The API is published with a UI written in a simple react Progressive Web
 Application (PWA). Used create-react-app --typescript to create a simple PWA
 with typescript. The PWA makes a call to our service running on port 3002 and
 displays the results.
-
-![PWA Screenshot](assets/pwa-screenshot2.jpg "PWA Screnshot")
-
-
+<br />
+<img src="assets/pwa-screenshot2.jpg" alt="PWA Screenshot" title="PWA Screnshot" width="200px">

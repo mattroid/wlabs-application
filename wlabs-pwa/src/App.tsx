@@ -3,10 +3,10 @@ import request from 'request-promise';
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component<{}, { products: any[]}> {
+class App extends Component<{}, { errors: string[], products: any[]}> {
   constructor(props: any) {
       super(props);
-      this.state = { products: [] }
+      this.state = { errors: [], products: [] }
       this.searchProducts = this.searchProducts.bind(this);
   }
   searchProducts(e: any){
@@ -15,13 +15,13 @@ class App extends Component<{}, { products: any[]}> {
 
     const searchTerm = (document.getElementById('searchText') as HTMLInputElement).value;
 
-    request.get({ uri:`http://localhost:3002/search/${searchTerm}`, json: true}).then((data) => {
-        // update the store
-        this.setState({ products: data});
-        data.map((d:any) => console.log(d.name));
+      request.get({ uri:`http://localhost:3002/search/${encodeURIComponent(searchTerm)}`, json: true}).then((data) => {
+        // updates our product views
+        this.setState({ errors: [], products: data});
 
     }).catch((e: any) => {
-        console.log('caught the error!');
+        this.setState({ errors: [`Couldn\'t make the request for ${searchTerm}`], products: []})
+        throw e;
     });
 
   }
@@ -36,13 +36,17 @@ class App extends Component<{}, { products: any[]}> {
           </p>
           <form className="form" id="searchForm">
               <input type="text" className="input" id="searchText" placeholder="Backpacks" />
-              <button className="button is-info" onClick={this.searchProducts}>Search</button>
+              <br />
+              <button id="searchButton" className="button is-info" onClick={this.searchProducts}>Search</button>
           </form>
+          { this.state.errors ? <p className="error">{this.state.errors[0]}</p>: null}
           <ul className="results">
               {this.state.products.map( (d: any) => <li key={d.itemId}>
-                  {d.name}
-                  <br />
-                  <img src={d.mediumImage} width="300" />
+                  <a href={d.productUrl} className="productLink">
+                    {d.name}
+                    <br />
+                    <img src={d.mediumImage} width="300" />
+                  </a>
               </li>)}
           </ul>
 
